@@ -9,6 +9,7 @@
 #import "RCTAppleHealthKit.h"
 #import "RCTAppleHealthKit+TypesAndPermissions.h"
 
+#import "RCTAppleHealthKit+Methods_DeleteMeals.h"
 #import "RCTAppleHealthKit+Methods_Activity.h"
 #import "RCTAppleHealthKit+Methods_Body.h"
 #import "RCTAppleHealthKit+Methods_Fitness.h"
@@ -72,6 +73,14 @@ RCT_EXPORT_METHOD(initHealthKit:(NSDictionary *)input callback:(RCTResponseSende
 {
     [self initializeHealthKit:input callback:callback];
 }
+
+
+RCT_EXPORT_METHOD(deleteMealById:(NSString *)mealId callback:(RCTResponseSenderBlock)callback)
+{
+  [self _initializeHealthStore];
+  [self deleteMealById:mealId callback:callback];
+}
+
 
 RCT_EXPORT_METHOD(initStepCountObserver:(NSDictionary *)input callback:(RCTResponseSenderBlock)callback)
 {
