@@ -16,6 +16,9 @@
 - (void)results_saveCarbohydratesSample:(NSDictionary *)input callback:(RCTResponseSenderBlock)callback;
 - (void)results_deleteBloodGlucoseSample:(NSString *)oid callback:(RCTResponseSenderBlock)callback;
 - (void)results_deleteCarbohydratesSample:(NSString *)oid callback:(RCTResponseSenderBlock)callback;
+- (void)results_deleteProteinSample:(NSString *)oid callback:(RCTResponseSenderBlock)callback; // ✅ Add this
+- (void)results_deleteFatSample:(NSString *)oid callback:(RCTResponseSenderBlock)callback;      // ✅ Add this
+- (void)results_deleteEnergySample:(NSString *)oid callback:(RCTResponseSenderBlock)callback;   // ✅ Add this
 - (void)results_saveInsulinDeliverySample:(NSDictionary *)input callback:(RCTResponseSenderBlock)callback;
 - (void)results_deleteInsulinDeliverySample:(NSString *)oid callback:(RCTResponseSenderBlock)callback;
 - (void)results_registerObservers:(RCTBridge *)bridge hasListeners:(bool)hasListeners;

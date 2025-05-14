@@ -516,6 +516,26 @@ RCT_EXPORT_METHOD(saveCarbohydratesSample:(NSDictionary *)input callback:(RCTRes
     [self results_saveCarbohydratesSample:input callback:callback];
 }
 
+// ---- delete meals - protein, fat, energy, carbohydrates samples ----
+
+RCT_EXPORT_METHOD(deleteProteinSample:(NSString *)oid callback:(RCTResponseSenderBlock)callback)
+{
+    [self _initializeHealthStore];
+    [self results_deleteProteinSample:oid callback:callback];
+}
+
+RCT_EXPORT_METHOD(deleteFatSample:(NSString *)oid callback:(RCTResponseSenderBlock)callback)
+{
+    [self _initializeHealthStore];
+    [self results_deleteFatSample:oid callback:callback];
+}
+
+RCT_EXPORT_METHOD(deleteEnergySample:(NSString *)oid callback:(RCTResponseSenderBlock)callback)
+{
+    [self _initializeHealthStore];
+    [self results_deleteEnergySample:oid callback:callback];
+}
+
 RCT_EXPORT_METHOD(deleteCarbohydratesSample:(NSString *)oid callback:(RCTResponseSenderBlock)callback)
 {
     [self _initializeHealthStore];

@@ -211,6 +211,7 @@
     }];
 }
 
+// ------ Delete Carbohydrates, Protein, Fat, Energy ------
 - (void)results_deleteCarbohydratesSample:(NSString *)oid callback:(RCTResponseSenderBlock)callback
 {
     HKQuantityType *carbohydratesType = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierDietaryCarbohydrates];
@@ -225,6 +226,53 @@
         callback(@[[NSNull null], @(deletedObjectCount)]);
     }];
 }
+
+- (void)results_deleteProteinSample:(NSString *)oid callback:(RCTResponseSenderBlock)callback
+{
+    HKQuantityType *proteinType = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierDietaryProtein];
+    NSUUID *uuid = [[NSUUID alloc] initWithUUIDString:oid];
+    NSPredicate *uuidPredicate = [HKQuery predicateForObjectWithUUID:uuid];
+    [self.healthStore deleteObjectsOfType:proteinType predicate:uuidPredicate withCompletion:^(BOOL success, NSUInteger deletedObjectCount, NSError * _Nullable error) {
+        if (!success) {
+            NSLog(@"❌ Error deleting protein sample: %@", error);
+            callback(@[RCTMakeError(@"Error deleting protein sample", error, nil)]);
+            return;
+        }
+        callback(@[[NSNull null], @(deletedObjectCount)]);
+    }];
+}
+
+- (void)results_deleteFatSample:(NSString *)oid callback:(RCTResponseSenderBlock)callback
+{
+    HKQuantityType *fatType = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierDietaryFatTotal];
+    NSUUID *uuid = [[NSUUID alloc] initWithUUIDString:oid];
+    NSPredicate *uuidPredicate = [HKQuery predicateForObjectWithUUID:uuid];
+    [self.healthStore deleteObjectsOfType:fatType predicate:uuidPredicate withCompletion:^(BOOL success, NSUInteger deletedObjectCount, NSError * _Nullable error) {
+        if (!success) {
+            NSLog(@"❌ Error deleting fat sample: %@", error);
+            callback(@[RCTMakeError(@"Error deleting fat sample", error, nil)]);
+            return;
+        }
+        callback(@[[NSNull null], @(deletedObjectCount)]);
+    }];
+}
+
+- (void)results_deleteEnergySample:(NSString *)oid callback:(RCTResponseSenderBlock)callback
+{
+    HKQuantityType *energyType = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierDietaryEnergyConsumed];
+    NSUUID *uuid = [[NSUUID alloc] initWithUUIDString:oid];
+    NSPredicate *uuidPredicate = [HKQuery predicateForObjectWithUUID:uuid];
+    [self.healthStore deleteObjectsOfType:energyType predicate:uuidPredicate withCompletion:^(BOOL success, NSUInteger deletedObjectCount, NSError * _Nullable error) {
+        if (!success) {
+            NSLog(@"❌ Error deleting energy sample: %@", error);
+            callback(@[RCTMakeError(@"Error deleting energy sample", error, nil)]);
+            return;
+        }
+        callback(@[[NSNull null], @(deletedObjectCount)]);
+    }];
+}
+
+//----------
 
 - (void)results_deleteInsulinDeliverySample:(NSString *)oid callback:(RCTResponseSenderBlock)callback
 {
