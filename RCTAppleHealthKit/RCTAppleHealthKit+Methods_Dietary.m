@@ -144,6 +144,7 @@
     NSString *foodNameValue = [RCTAppleHealthKit stringFromOptions:input key:@"foodName" withDefault:nil];
     NSString *mealNameValue = [RCTAppleHealthKit stringFromOptions:input key:@"mealType" withDefault:nil];
     NSDate *timeFoodWasConsumed = [RCTAppleHealthKit dateFromOptions:input key:@"date" withDefault:[NSDate date]];
+    NSDictionary *jsMetadata = input[@"metadata"];
     double biotinValue = [RCTAppleHealthKit doubleFromOptions:input key:@"biotin" withDefault:(double)0];
     double caffeineValue = [RCTAppleHealthKit doubleFromOptions:input key:@"caffeine" withDefault:(double)0];
     double calciumValue = [RCTAppleHealthKit doubleFromOptions:input key:@"calcium" withDefault:(double)0];
@@ -183,13 +184,27 @@
     double zincValue = [RCTAppleHealthKit doubleFromOptions:input key:@"zinc" withDefault:(double)0];
 
     // Metadata including some new food-related keys //
-    NSDictionary *metadata = @{
-            HKMetadataKeyFoodType:foodNameValue,
-            //@"HKFoodBrandName":@"FoodBrandName", // Restaurant name or packaged food brand name
-            //@"HKFoodTypeUUID":@"FoodTypeUUID", // Identifier for this food
-            @"HKFoodMeal":mealNameValue//, // Breakfast, Lunch, Dinner, or Snacks
-            //@"HKFoodImageName":@"FoodImageName" // Food icon name
-    };
+    //NSDictionary *metadata = @{
+            //HKMetadataKeyFoodType:foodNameValue,
+                    //@"HKFoodBrandName":@"FoodBrandName", // Restaurant name or packaged food brand name
+                    //@"HKFoodTypeUUID":@"FoodTypeUUID", // Identifier for this food
+            //@"HKFoodMeal":mealNameValue//, // Breakfast, Lunch, Dinner, or Snacks
+                    //@"HKFoodImageName":@"FoodImageName" // Food icon name
+    //};
+
+    NSMutableDictionary *metadata = [@{
+    HKMetadataKeyFoodType: foodNameValue ?: @"",
+    HKFoodMeal: mealNameValue ?: @"Lunch"
+} mutableCopy];
+
+if (jsMetadata[@"portionWeight"]) {
+    metadata[@"portionWeight"] = jsMetadata[@"portionWeight"];
+}
+
+if (jsMetadata[@"servings"]) {
+    metadata[@"servings"] = jsMetadata[@"servings"];
+}
+
 
     // Create nutrtional data for food //
     NSMutableSet *mySet = [[NSMutableSet alloc] init];
