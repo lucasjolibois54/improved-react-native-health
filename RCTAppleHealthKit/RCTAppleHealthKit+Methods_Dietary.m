@@ -614,4 +614,65 @@ if (jsMetadata[@"servings"]) {
     }];
 }
 
+
+
+
+
+
+- (void)getFoodSamples:(NSDictionary *)input callback:(RCTResponseSenderBlock)callback {
+    NSDate *startDate = [RCTAppleHealthKit dateFromOptions:input key:@"startDate" withDefault:nil];
+    NSDate *endDate = [RCTAppleHealthKit dateFromOptions:input key:@"endDate" withDefault:[NSDate date]];
+    NSUInteger limit = [RCTAppleHealthKit uintFromOptions:input key:@"limit" withDefault:HKObjectQueryNoLimit];
+    BOOL ascending = [RCTAppleHealthKit boolFromOptions:input key:@"ascending" withDefault:true];
+
+    if (!startDate) {
+        callback(@[RCTMakeError(@"startDate is required in options", nil, nil)]);
+        return;
+    }
+
+    HKCorrelationType *foodType = [HKObjectType correlationTypeForIdentifier:HKCorrelationTypeIdentifierFood];
+    NSPredicate *predicate = [RCTAppleHealthKit predicateForSamplesBetweenDates:startDate endDate:endDate];
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:HKSampleSortIdentifierStartDate ascending:ascending];
+
+    HKSampleQuery *query = [[HKSampleQuery alloc] initWithSampleType:foodType
+                                                           predicate:predicate
+                                                               limit:limit
+                                                     sortDescriptors:@[sortDescriptor]
+                                                      resultsHandler:^(HKSampleQuery *query, NSArray *results, NSError *error) {
+        if (error) {
+            callback(@[RCTMakeError(@"Error getting food samples", error, nil)]);
+            return;
+        }
+
+        NSMutableArray *formatted = [NSMutableArray array];
+        for (HKCorrelation *sample in results) {
+            NSMutableDictionary *entry = [@{
+                @"startDate": [RCTAppleHealthKit buildISO8601StringFromDate:sample.startDate],
+                @"endDate": [RCTAppleHealthKit buildISO8601StringFromDate:sample.endDate],
+                @"metadata": sample.metadata ?: @{}
+            } mutableCopy];
+
+            NSMutableArray *nutrients = [NSMutableArray array];
+            for (HKQuantitySample *qs in sample.objects) {
+                NSString *identifier = qs.quantityType.identifier;
+                double value = [qs.quantity doubleValueForUnit:[HKUnit gramUnit]];
+                [nutrients addObject:@{
+                    @"type": identifier,
+                    @"value": @(value),
+                    @"startDate": [RCTAppleHealthKit buildISO8601StringFromDate:qs.startDate],
+                    @"metadata": qs.metadata ?: @{}
+                }];
+            }
+
+            entry[@"nutrients"] = nutrients;
+            [formatted addObject:entry];
+        }
+
+        callback(@[[NSNull null], formatted]);
+    }];
+
+    [self.healthStore executeQuery:query];
+}
+
+
 @end

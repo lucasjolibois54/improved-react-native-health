@@ -75,6 +75,15 @@ RCT_EXPORT_METHOD(initHealthKit:(NSDictionary *)input callback:(RCTResponseSende
 }
 
 
+
+RCT_EXPORT_METHOD(getFoodSamples:(NSDictionary *)input callback:(RCTResponseSenderBlock)callback)
+{
+    [self.healthKit getFoodSamples:input callback:callback];
+}
+
+
+
+
 RCT_EXPORT_METHOD(deleteMealById:(NSString *)mealId callback:(RCTResponseSenderBlock)callback)
 {
   [self _initializeHealthStore];
