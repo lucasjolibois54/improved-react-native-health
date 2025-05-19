@@ -76,10 +76,51 @@ RCT_EXPORT_METHOD(initHealthKit:(NSDictionary *)input callback:(RCTResponseSende
 
 
 
-RCT_EXPORT_METHOD(getFoodSamples:(NSDictionary *)input callback:(RCTResponseSenderBlock)callback)
+/*RCT_EXPORT_METHOD(getFoodSamples:(NSDictionary *)input callback:(RCTResponseSenderBlock)callback)
 {
     [self.healthKit getFoodSamples:input callback:callback];
+}*/
+
+RCT_EXPORT_METHOD(getFoodSamples:(NSDictionary *)input callback:(RCTResponseSenderBlock)callback)
+{
+    HKSampleType *foodType = [HKObjectType correlationTypeForIdentifier:HKCorrelationTypeIdentifierFood];
+    
+    NSDate *startDate = [NSDate dateWithTimeIntervalSince1970:0];
+    NSDate *endDate = [NSDate date];
+
+    NSPredicate *predicate = [HKQuery predicateForSamplesWithStartDate:startDate endDate:endDate options:HKQueryOptionStrictStartDate];
+
+    HKSampleQuery *query = [[HKSampleQuery alloc] initWithSampleType:foodType
+                                                           predicate:predicate
+                                                               limit:HKObjectQueryNoLimit
+                                                     sortDescriptors:nil
+                                                      resultsHandler:^(HKSampleQuery *query, NSArray *results, NSError *error) {
+        if (error) {
+            callback(@[@{ @"error": error.localizedDescription }]);
+            return;
+        }
+
+        NSMutableArray *foods = [NSMutableArray array];
+        for (HKCorrelation *correlation in results) {
+            NSMutableDictionary *foodDict = [NSMutableDictionary dictionary];
+            foodDict[@"startDate"] = correlation.startDate.description;
+            foodDict[@"endDate"] = correlation.endDate.description;
+
+            for (HKQuantitySample *sample in correlation.objects) {
+                NSString *type = sample.quantityType.identifier;
+                double value = [sample.quantity doubleValueForUnit:[HKUnit gramUnit]];
+                foodDict[type] = @(value);
+            }
+
+            [foods addObject:foodDict];
+        }
+
+        callback(@[[NSNull null], foods]);
+    }];
+
+    [[[HKHealthStore alloc] init] executeQuery:query];
 }
+
 
 
 
