@@ -362,7 +362,7 @@ RCT_EXPORT_METHOD(getFiberSamples:(NSDictionary *)input callback:(RCTResponseSen
 
 RCT_EXPORT_METHOD(getSaturatedFatSamples:(NSDictionary *)input callback:(RCTResponseSenderBlock)callback)
 {
-    [self dietary_getSaturatedFatSamples:input callback:callback];
+   [self dietary_getSaturatedFatSamples:input callback:callback];
 }
 
 RCT_EXPORT_METHOD(getPolyunsaturatedFatSamples:(NSDictionary *)input callback:(RCTResponseSenderBlock)callback)
