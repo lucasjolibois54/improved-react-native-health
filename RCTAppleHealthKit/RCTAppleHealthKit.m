@@ -363,6 +363,12 @@ RCT_EXPORT_METHOD(getTotalFatSamples:(NSDictionary *)input callback:(RCTResponse
    [self dietary_getTotalFatSamples:input callback:callback];
 }
 
+RCT_EXPORT_METHOD(getSaturatedFatSamples:(NSDictionary *)input callback:(RCTResponseSenderBlock)callback)
+{
+    [self dietary_getSaturatedFatSamples:input callback:callback];
+}
+
+
 RCT_EXPORT_METHOD(saveFood:(NSDictionary *)input callback:(RCTResponseSenderBlock)callback)
 {
     [self _initializeHealthStore];
