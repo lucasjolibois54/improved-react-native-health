@@ -360,11 +360,10 @@ RCT_EXPORT_METHOD(getFiberSamples:(NSDictionary *)input callback:(RCTResponseSen
 
 // ---- get saturated fat, polyunsaturated fat and sugar
 
-RCT_EXPORT_METHOD(getFatSaturatedSamples:(NSDictionary *)input callback:(RCTResponseSenderBlock)callback)
+RCT_EXPORT_METHOD(getSaturatedFatSamples:(NSDictionary *)input callback:(RCTResponseSenderBlock)callback)
 {
-   [self dietary_getSaturatedFatSamples:input callback:callback];
+    [self dietary_getSaturatedFatSamples:input callback:callback];
 }
-
 
 RCT_EXPORT_METHOD(getPolyunsaturatedFatSamples:(NSDictionary *)input callback:(RCTResponseSenderBlock)callback)
 {
