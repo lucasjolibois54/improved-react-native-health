@@ -25,6 +25,8 @@
 #import "RCTAppleHealthKit+Methods_Summary.h"
 #import "RCTAppleHealthKit+Methods_ClinicalRecords.h"
 
+#import "HealthKit.h" // ✅
+
 #import <React/RCTBridgeModule.h>
 #import <React/RCTEventDispatcher.h>
 
@@ -54,9 +56,12 @@ RCT_EXPORT_MODULE();
     return sharedJsModule;
 }
 
-- (id) init
-{
-    return [super init];
+- (id)init {
+    self = [super init];
+    if (self) {
+        _healthKit = [HealthKit new]; // ✅ Instantiates HealthKit
+    }
+    return self;
 }
 
 + (BOOL)requiresMainQueueSetup
@@ -711,6 +716,8 @@ RCT_EXPORT_METHOD(getClinicalRecords:(NSDictionary *)input callback:(RCTResponse
 - (void)initializeHealthKit:(NSDictionary *)input callback:(RCTResponseSenderBlock)callback
 {
     [self _initializeHealthStore];
+
+        _healthKit = [[HealthKit alloc] init]; // ✅ instantiates and assigns
 
     if ([HKHealthStore isHealthDataAvailable]) {
         NSSet *writeDataTypes;

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <HealthKit/HealthKit.h>
+#import "HealthKit.h" // ✅
 
 #import <React/RCTBridgeModule.h>
 #import <React/RCTEventEmitter.h>
@@ -18,6 +19,7 @@
 @interface RCTAppleHealthKit : RCTEventEmitter <RCTBridgeModule>
 
 @property (nonatomic) HKHealthStore *healthStore;
+@property (nonatomic, retain) HealthKit *healthKit; // ✅
 @property (nonatomic, assign) BOOL hasListeners;
 
 - (HKHealthStore *)_initializeHealthStore;
