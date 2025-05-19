@@ -16,11 +16,6 @@
 - (void)getWater:(NSDictionary *)input callback:(RCTResponseSenderBlock)callback;
 - (void)getWaterSamples:(NSDictionary *)input callback:(RCTResponseSenderBlock)callback;
 
-// MARK: - Dietary
-- (void)dietary_getSaturatedFatSamples:(NSDictionary *)input callback:(RCTResponseSenderBlock)callback;
-- (void)dietary_getPolyunsaturatedFatSamples:(NSDictionary *)input callback:(RCTResponseSenderBlock)callback;
-- (void)dietary_getSugarSamples:(NSDictionary *)input callback:(RCTResponseSenderBlock)callback;
-
 - (void)dietary_getEnergyConsumedSamples:(NSDictionary *)input callback:(RCTResponseSenderBlock)callback;
 - (void)dietary_getProteinSamples:(NSDictionary *)input callback:(RCTResponseSenderBlock)callback;
 - (void)dietary_getFiberSamples:(NSDictionary *)input callback:(RCTResponseSenderBlock)callback;
