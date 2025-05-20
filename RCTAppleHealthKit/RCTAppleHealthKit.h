@@ -28,4 +28,7 @@
 - (void)initializeBackgroundObservers:(RCTBridge *)bridge;
 - (void)emitEventWithName:(NSString *)name andPayload:(NSDictionary *)payload;
 
+RCT_EXTERN_METHOD(getSaturatedFatSamples:(NSDictionary *)input callback:(RCTResponseSenderBlock)callback)
+
+
 @end
