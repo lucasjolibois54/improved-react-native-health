@@ -404,74 +404,10 @@ RCT_EXPORT_METHOD(getTotalFatSamples:(NSDictionary *)input callback:(RCTResponse
    [self dietary_getTotalFatSamples:input callback:callback];
 }
 
-/*RCT_EXPORT_METHOD(getSaturatedFatSamples:(NSDictionary *)input callback:(RCTResponseSenderBlock)callback)
-{
-    [self dietary_getSaturatedFatSamples:input callback:callback];
-}*/
-
 RCT_EXPORT_METHOD(getSaturatedFatSamples:(NSDictionary *)input callback:(RCTResponseSenderBlock)callback)
 {
-    HKHealthStore *healthStore = self.healthStore;
-
-    if (![HKHealthStore isHealthDataAvailable]) {
-        callback(@[@"Health data not available", [NSNull null]]);
-        return;
-    }
-
-    HKQuantityType *saturatedFatType = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierDietaryFatSaturated];
-
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZZZ"];
-
-    NSString *startDateStr = input[@"startDate"];
-    NSString *endDateStr = input[@"endDate"];
-
-    NSDate *startDate = [dateFormatter dateFromString:startDateStr];
-    NSDate *endDate = [dateFormatter dateFromString:endDateStr];
-
-    if (!startDate || !endDate) {
-        callback(@[@"Invalid start or end date", [NSNull null]]);
-        return;
-    }
-
-    NSPredicate *predicate = [HKQuery predicateForSamplesWithStartDate:startDate endDate:endDate options:HKQueryOptionStrictStartDate];
-
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:HKSampleSortIdentifierStartDate ascending:YES];
-
-    HKSampleQuery *query = [[HKSampleQuery alloc] initWithSampleType:saturatedFatType
-                                                           predicate:predicate
-                                                               limit:HKObjectQueryNoLimit
-                                                     sortDescriptors:@[sortDescriptor]
-                                                      resultsHandler:^(HKSampleQuery *query, NSArray<__kindof HKSample *> *results, NSError *error) {
-        if (error) {
-            callback(@[error.localizedDescription, [NSNull null]]);
-            return;
-        }
-
-        NSMutableArray *samples = [NSMutableArray array];
-        for (HKQuantitySample *sample in results) {
-            double value = [sample.quantity doubleValueForUnit:[HKUnit gramUnit]];
-            NSDate *start = sample.startDate;
-            NSDate *end = sample.endDate;
-
-            NSDictionary *sampleDict = @{
-                @"startDate": [dateFormatter stringFromDate:start],
-                @"endDate": [dateFormatter stringFromDate:end],
-                @"value": @(value),
-                @"unit": @"g",
-                @"sourceName": sample.source.name ?: @"",
-                @"sourceId": sample.source.bundleIdentifier ?: @"",
-                @"uuid": sample.UUID.UUIDString ?: @""
-            };
-            [samples addObject:sampleDict];
-        }
-
-        callback(@[[NSNull null], samples]);
-    }];
-
-    [healthStore executeQuery:query];
+    [self dietary_getSaturatedFatSamples:input callback:callback];
 }
-
 
 
 RCT_EXPORT_METHOD(saveFood:(NSDictionary *)input callback:(RCTResponseSenderBlock)callback)
